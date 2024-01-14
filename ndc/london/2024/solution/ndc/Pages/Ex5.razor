@@ -1,0 +1,102 @@
+﻿@page "/ex5"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 5: Sous-chef Bot</h3>
+
+<ul>
+    <li>
+        <b>Zero-shot Prompt - </b> Zero-shot learning is the most simple prompt engineering technique. If you’ve played around with ChatGPT writing simple prompts, you’re familiar with it.
+        With zero-shot learning, you simply describe the task you want the model to solve and let it generate a response.
+
+        @*Develop a new dessert recipe*@
+
+    </li>
+    <li>
+        <b>Few-shot Prompt - </b>The next prompt engineering technique is called few-shot learning. This technique adds input-output examples to
+        the prompt, showing the model the correct behavior.
+
+        @*Develop a new dessert recipe.
+
+        Example 1: Recipe Name: Chocolate Raspberry Dream. Ingredients: Dark chocolate, fresh raspberries, heavy cream, sugar, butter, eggs, flour. Directions: Melt chocolate and butter, whip eggs and sugar, fold in flour, layer with raspberries and bake for 20 minutes.
+
+        Example 2: Recipe Name: Tropical Coconut Delight. Ingredients: Coconut milk, pineapple chunks, mango slices, honey, lime zest, gelatin. Directions: Mix coconut milk with honey and lime zest, add softened gelatin, pour over pineapple and mango, chill until set.
+
+        Example 3: Recipe Name: Caramel Apple Cheesecake. Ingredients: Graham cracker crumbs, sliced apples, cream cheese, sugar, eggs, vanilla extract, caramel sauce. Directions: Press crumbs into pan, layer apples and cream cheese mixture, bake, drizzle with caramel sauce.*@
+
+    </li>
+    <li>
+        <b>Chain-of-Thought Prompt -</b> CoT prompting is an advanced prompting technique that generates a chain of thought or a series of intermediate reasoning steps that improve the model’s ability to perform complex reasoning.
+
+        This prompting technique enables models to decompose multi-step problems.
+        Chain-of-thought prompting can be combined with few-shot prompting to get better results on more complex tasks that require reasoning before responding.
+
+        @*Develop a new dessert recipe.
+
+        First, think of a base flavor that is popular and versatile. 
+        Next, consider ingredients that complement the base flavor.
+        Decide on the type of dessert. 
+        Think about what makes the dessert unique, incorporating a twists
+        Finally, list the ingredients needed and provide simple baking instructions.*@
+
+    </li>
+</ul>
+
+
+
+
+<div>
+    <h4 for="prompt">Enter a prompt:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+
+    
+    <button class="btn btn-primary" @onclick="GenerateText">Make Recipe</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Generated Text:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+            {
+                    // The system message represents instructions or other guidance about how the assistant should behave
+                    new ChatRequestSystemMessage("You are a Michelin Star chef known for creating unique dessert recipes."),
+                    // User messages represent current or historical input from the end user
+                    new ChatRequestUserMessage(promptText),
+            }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

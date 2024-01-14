@@ -1,0 +1,78 @@
+﻿@page "/ex2"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 2: Book Recommendation Bot</h3>
+
+<div>
+    <h4 for="prompt">Enter user profile information:</h4>
+
+    <h5 for="prompt">Enter the reader age:</h5>
+    <input type="text" id="prompt" style="width: 100%;" @bind="age" />
+    @*12*@
+
+    <h5 for="prompt">Enter the reader's favorite genres:</h5>
+    <input type="text" id="prompt" style="width: 100%;" @bind="genres" />
+    @*Science Fiction*@
+
+    <h5 for="prompt">Enter the reader's favorite authors:</h5>
+    <input type="text" id="prompt" style="width: 100%;" @bind="authors" />
+    @*Judy Blume, Madeleine*@
+
+    <h5 for="prompt">Enter a prompt:</h5>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+    @*Can you recommend 5 books for this user?*@
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Generate Text</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Recommend Books:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string generatedText;
+    private string apiKey;
+    private string age;
+    private string genres;
+    private string authors;
+    private string promptText;
+  
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+            {
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are an AI assistant that generates personalized book recommendations based on user preferences."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage("The user age is: " + age + ". The user's favorite genres: " + genres + ". The user's favorite authors are: " + authors),
+                new ChatRequestUserMessage(promptText)
+            }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

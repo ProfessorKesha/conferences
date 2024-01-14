@@ -1,0 +1,101 @@
+﻿@page "/ex14"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>
+    Exercise 14: Transcribe and Translate audio data with Whisper speech models
+</h3>
+&nbsp;
+<div>
+    <h4 for="prompt">Upload file to transribe</h4>
+    <InputFile OnChange="@LoadFiles" multiple />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="Transcribe">Transcribe</button>
+</div>
+&nbsp;
+<div>
+    <label for="result">Transcribed Text:</label>
+    @transcribedText
+</div>
+<hr />
+&nbsp;
+<div>
+    <h4 for="prompt">Upload file to translate to English</h4>
+    <InputFile OnChange="@LoadFiles" multiple />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="Translate">Translate</button>
+</div>
+&nbsp;
+<div>
+    <label for="result">Translated Text:</label>
+    @tranlatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string transcribedText;
+    private string tranlatedText;
+    private string apiKey;
+    private IBrowserFile uploadFile;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        uploadFile = e.File;
+    }
+
+    private async Task Transcribe()
+    {
+        transcribedText = "";
+
+        var audioFile = File.ReadAllBytes(uploadFile.Name);
+
+        var transcriptionOptions = new AudioTranscriptionOptions()
+        {
+            Filename = uploadFile.Name,
+            DeploymentName = "whisper-1",
+            AudioData = BinaryData.FromBytes(audioFile),
+            ResponseFormat = AudioTranscriptionFormat.Verbose,
+        };
+
+        var transcriptionResponse = await client.GetAudioTranscriptionAsync(transcriptionOptions);
+        var transcription = transcriptionResponse.Value;
+
+        transcribedText = transcription.Text;
+
+    }
+
+    private async Task Translate()
+    {
+        tranlatedText = "";
+
+        var audioFile = File.ReadAllBytes(uploadFile.Name);
+
+        var translationOptions = new AudioTranslationOptions()
+        {
+            Filename = uploadFile.Name,
+            DeploymentName = "whisper-1",
+            AudioData = BinaryData.FromBytes(audioFile),
+            ResponseFormat = AudioTranslationFormat.Verbose,
+        };
+
+        var translationResponse = await client.GetAudioTranslationAsync(translationOptions);
+        var translation = translationResponse.Value;
+
+        tranlatedText = translation.Text;
+
+    }
+}
+

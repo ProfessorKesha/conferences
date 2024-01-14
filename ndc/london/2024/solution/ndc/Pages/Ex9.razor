@@ -1,0 +1,88 @@
+﻿@page "/ex9"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 9: Customer Service Bot</h3>
+
+<div>
+    <h4 for="prompt">Enter customer review:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="customerReview" />
+
+</div>
+
+<div>
+    <h4 for="prompt">Enter a prompt:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+
+
+    <button class="btn btn-primary" @onclick="GenerateText">Generate Email</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Generated Text:</label>
+    @generatedText
+</div>
+
+@*I lost The Oregon Trail and it was a frustrating experience. The game's challenges
+    felt insurmountable and the decisions seemed to lead to constant setbacks.
+    Managing resources was a constant struggle, leaving me feeling helpless.
+    The lack of clear instructions and overwhelming obstacles made the journey disheartening.
+    The Oregon Trail left me disappointed and discouraged, with a sense of defeat rather than
+    triumph.*@
+
+
+@*I conquered The Oregon Trail and emerged triumphant! The game's immersive challenges and
+              strategic choices made for an unforgettable adventure. From overcoming obstacles to managing
+              resources, every decision felt crucial. The satisfaction of reaching the destination was
+              unparalleled. The Oregon Trail is an absolute must-play for those seeking an epic journey of
+              victory and resilience.*@
+
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string generatedText;
+    private string apiKey;
+    private string customerReview;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+        generatedText = "";
+
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+{
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are a customer service AI assistant. Your goal is generate an email reply to a customer after " +
+                " reading their review of The Oregon Trail game. Thank the customer" +
+                " if their review is positive. Apologize if the review is negative. Be concise and professional in your response. " +
+                " Here is the customer review."),
+
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage("Here is the review: " + customerReview + " " + promptText),
+        }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

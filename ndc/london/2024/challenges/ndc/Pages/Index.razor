@@ -1,0 +1,201 @@
+﻿@page "/"
+<PageTitle>OpenAI</PageTitle>
+
+<h3>NDC London Workshop Challenges</h3>
+
+<h5>Documentation</h5>
+    <ul>
+        <li><a href="https://learn.microsoft.com/en-us/dotnet/api/overview/azure/ai.openai-readme?view=azure-dotnet-preview">Azure OpenAI client library for .NET</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/dotnet/api/azure.ai.openai?view=azure-dotnet-preview">Azure.AI.OpenAI Namespace</a></li>
+    </ul>
+
+    <h5>Prompt Engineering Challenges</h5>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Challenge Name</th>
+                <th>Challenge Prompt</th>
+                <th>Tips</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Simple Prompt to ChatGPT</td>
+                <td>For this challenge, you will use the Azure OpenAI client library for .NET to send a simple prompt to ChatGPT.</td>
+                <td><ul><li>Don't forget to authenicate to the API using your API key.</li><li>ChatCompletionsOptions</li></ul></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Book Recommendation Bot</td>
+                <td>For this challenge, you will write a prompt to retrieve personalized book recommendations based on user preferences.</td>
+                <td>Prompts typically contain several elements – not all elements are required.
+
+                    <b>Context:</b> Context helps the model understand the task or the desired output. Context steers the model to better responses.
+
+                    <b>Input Data:</b> Input data is the actual data you want the model to process. 
+
+                    <b>Instructions: </b>Instructions textually describe what you want the model to do. 
+
+                    <b>Examples:</b> Examples demonstrate the correct behavior to the model.
+
+                    <b>Constraints:</b> Constraints restrict the output of the model based on specific requirements.
+
+                    <b> Don't forget to set the sysytem message. </b>
+
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Language Translator Bot</td>
+                <td>For this challenge, you will build a language translation app that translates from one language to multiple languages at once.</td>
+                <td><ul><li>Use your chosen languages text snippets for the examples.</li><li>ChatCompletionsOptions</li></ul></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Bug Fixer</td>
+                <td>For this challenge, you will build an application that reviews and optimizes code from popular program languages like C#, Java, and Python.</td>
+                <td>You any code of your choice. For extra credit, add the ability to generate code from scratch. </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Sous-chef Bot</td>
+                <td>For this challenge, you will build a sous-chef bot using advanced prompting techniques.</td>
+                <td>Iterate with your prompt:
+                    <ul>
+                        <li>Zero-shot Prompt</li>
+                        <li>Few-shot Prompt</li>
+                        <li>Chain-of-Thought Prompt</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Travel Agenty Bot </td>
+                <td>
+                    For this challenge, you will build a travel agent bot using RAG (Retrieval Augmented Generation)/Knowledge Augmentation. 
+                    This advanced prompt engineering technique is a game-changer when improving model performance.
+                    You can help pre-trained language models learn and get better over time without having to do any additional training.
+                </td>
+                <td>You can incorporate API calls, vector databases, and more! </td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Personal Trainer </td>
+                <td>For this challenge, you will build a personal training bot using prompt tuning techniques to improve results from the LLM.</td>
+                <td>Show the original and tuned results on the screen.</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Mood Detection Bot</td>
+                <td>For this challenge, you will infer sentiment from a piece of text. Inferring involves extracting hidden or unspoken information
+                    from a given text.</td>
+                <td>You can infer topics, emotions, sentiment, and more. Feel free to use this text:
+                    <div>
+                        Artificial intelligence has revolutionized various industries, including
+                        healthcare, finance, and transportation. Through advanced algorithms and
+                        machine learning techniques, AI has enabled more accurate diagnoses,
+                        personalized financial recommendations, and autonomous vehicles. However,
+                        along with its benefits,there are concerns about privacy, ethical implications,
+                        and job displacement. The integration of AI into society raises questions
+                        about data security, algorithm biases, and the impact on
+                        human labor. It is crucial to explore the potential of AI while addressing
+                        these challenges to ensure a responsible and equitable AI-powered future.
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Customer Service Bot</td>
+                <td>For this challenge, you will develop a customer service bot that generates the content for response emails. </td>
+                <td>Feel free to use your own content or the ones provided.</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Search Bot</td>
+                <td>
+                    For this challenge, you will generate embeddings (or the numeric representation of text). OpenAI’s Embeddings API makes generating embeddings
+                    easy, allowing machines to understand text-based content better and identify relationships between words more easily.
+                </td>
+                <td>
+                    Word embeddings power advanded search, recommendation systems, question answering, sentiment analysis, and more! For extra credit, calcuate the Cosine similarity.
+                    Cosine similarity is a measure of similarity between two non-zero vectors. The value can be between 0 and 1;
+                    the closer the value is to 1, the more similar the vectors are.
+
+                    <b>Hint: use EmbeddingsOptions.</b>
+                </td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>Writing Bot</td>
+                <td>For this challenge, you will developer a bot that helps with identifying spelling and grammatical errors while adjusting tone.</td>
+                <td>Use your content or the one provided.</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <h5>Building a Chatbot Interface</h5>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Challenge Name</th>
+                <th>Challenge Prompt</th>
+                <th>Tips</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>12</td>
+                <td>Design a user-friendly chat interface with a multi-turn conversation.</td>
+                <td>For this challenge, you will incorporate a multi-turn conversation into your virtual AI assistant.</td>
+                <td>
+                    <ul>
+                        <li>
+                            Don’t forget that each interaction with the AI assistant is a new session. If you want the model to “remember”
+                            the conversation and have the proper context to produce output, you must include the entire message history,
+                            meaning all of the prompts and responses, with each request.
+                        </li>
+                        <li>(EXTRA CREDIT) Make the code an injectionable service.</li>
+                        <li>ChatRequestMessage</li>
+                        <li>ChatResponseMessage</li>
+                        <li>ChatCompletionsOptions</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>Generate images with DALL-E image generation models</td>
+                <td>For this challenge, build a basic UI for inputting image generation requests and generating images based on a text prompt.</td>
+                <td>
+                    <ul>
+                        <li>
+                            ImageGenerationOptions
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>Transcribe and Translate audio data with Whisper speech models</td>
+                <td>
+                    For this challenge, you will transcribe audio by uploading audio files like mp3s. You'll also ranslate audio data to
+                    English with Whisper speech models.
+                </td>
+                <td>
+                    <ul>
+                        <li>AudioTranscriptionOptions</li>
+                        <li>AudioTranscription</li>
+                        <li>AudioTranslationOptions</li>
+                        <li>AudioTranslation</li>
+                    </ul>
+                </td>
+            </tr>
+           
+
+        </tbody>
+    </table>

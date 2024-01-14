@@ -1,0 +1,75 @@
+﻿@page "/ex3"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Language Translator Bot</h3>
+<div>
+    <h4 for="prompt">Enter the phrase you would like translated:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+
+<div>
+    <h4 for="prompt">Enter the first language:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="firstlang" />
+</div>
+
+<div>
+    <h4 for="prompt">Enter the second language:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="secondlang" />
+</div>
+
+<div>
+    <h4 for="prompt">Enter the third language:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="thirdlang" />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Translate</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Language Translation:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string firstlang;
+    private string secondlang;
+    private String thirdlang;
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+        {
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are a helpful assistant known for language translation."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage("Translate this text: " + promptText + "to these three languages: " + firstlang + "," + secondlang + "," + thirdlang)
+            }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

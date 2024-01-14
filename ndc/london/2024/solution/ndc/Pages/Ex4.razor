@@ -1,0 +1,71 @@
+﻿@page "/ex4"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 4: Bug Fixer</h3>
+
+<div>
+    <h4 for="prompt">Enter the code to be optimized:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="promptText" />
+    @*<input type="text" id="prompt" style="width: 100%;" @bind="promptText" />*@
+</div>
+&nbsp;
+
+@*def calculate_average(numbers):
+    total_sum = 0
+    for number in numbers:
+        total_sum += number
+    average = total_sum / len(numbers)
+    return average
+
+# Example usage
+numbers = [10, 20, 30, 40, 50]
+print("Average:", calculate_average(numbers))*@
+
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Fix Bugs</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Generated Text:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+        {
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are helpful coding bot."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage("Optimize the following code and make sure to tell us the langage and what you changed and why: " + promptText),
+            }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

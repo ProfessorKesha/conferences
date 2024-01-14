@@ -1,0 +1,83 @@
+﻿@page "/ex8"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 8: Mood Detection Bot</h3>
+
+<div>
+    <h4 for="prompt">Enter a text to infer sentiment from:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="text" />
+
+    <h4 for="prompt">Enter the prompt:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Infer</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Response:</label>
+    @generatedText
+</div>
+
+@*
+
+    What's the mood of this text?
+
+
+    What topics are being discussed in the following text
+
+    Determine six topics that are being discussed in the
+    provided text.Make each topic one word. Format your response in JSON.
+
+    Identify a list of emotions in this text
+
+    Identify a list of emotions that this text will invoke by a reader
+    that doesn't like artificial intelligence and the current advancements.
+    Determine no more than six emotions. Format your answer in a pipe delimited list.
+
+
+*@
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string text = "Artificial intelligence has revolutionized various industries, including healthcare, finance, and transportation. Through advanced algorithms and machine learning techniques, AI has enabled more accurate diagnoses, personalized financial recommendations, and autonomous vehicles. However, along with its benefits,there are concerns about privacy, ethical implications, and job displacement. The integration of AI into society raises questions about data security, algorithm biases, and the impact on human labor. It is crucial to explore the potential of AI while addressing these challenges to ensure a responsible and equitable AI-powered future.";
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+        generatedText = "";
+
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+    {
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are a helpful assistant."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage(promptText + ": " + text),
+            }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

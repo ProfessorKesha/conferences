@@ -1,0 +1,111 @@
+﻿@page "/prereq"
+<PageTitle>OpenAI</PageTitle>
+
+<h3>Prerequisites to the Workshop Challenges</h3>
+
+
+<dl>
+    <dt>Setup An OpenAI Developer Account</dt>
+    <dd>
+        <ul>
+            <li>Access the OpenAI <a href="https://platform.openai.com/overview">https://platform.openai.com/overview</a> developer site. </li>
+            <li>Generate a secret API key to access the API. Treat your API key like a password and keep it safe! Go to
+            "API keys" from the left-hand menu.</li>
+        </ul>
+    </dd>
+</dl>
+
+<dl>
+    <dt>Generate an API key</dt>
+    <dd>
+        <ul>
+            <li>
+                Generate a secret API key to access the API. Treat your API key like a password and keep it safe! Go to
+                "API keys" from the left-hand menu.
+            </li>
+        </ul>
+    </dd>
+</dl>
+
+<dl>
+    <dt>Pricing</dt>
+    <dd>
+        <ul>
+            <li>
+                <b>Pricing:</b> When you first sign up as an OpenAI developer, you’ll get a “grant” of free credits to use. After you have used
+                up your free credits you’ll be prompted to add a credit card to keep an active account and then you’ll be charged for
+                how much you use the API on a monthly basis.
+                &nbsp;
+                To see Billing, click on Settings and go to Billing.
+            </li>
+
+        </ul>
+    </dd>
+</dl>
+
+<dl>
+    <dt>Test API in Postman</dt>
+    <dd>
+        On the <b>Auhtorization</b> tab, select type of <b>Bearer Token</b>. Enter your API key in the <b>Token</b> field.
+    </dd>
+</dl>
+<dl>
+    <dt>SDK/Library Review</dt>
+    <dd>
+        Libraries page: <a href="https://platform.openai.com/docs/libraries/python-library">https://platform.openai.com/docs/libraries/python-library</a>
+    </dd>
+    <dt>Azure API </dt>
+    <dd>
+        <ul><li>
+    Microsoft's Azure team maintains libraries that are compatible with both the OpenAI API and Azure OpenAI services.
+    Read the library documentation below to learn how you can use them with the OpenAI API.
+    &nbsp;
+    <a href="https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/openai/Azure.AI.OpenAI">Azure OpenAI client library for .NET</a>
+</li><li>It can connect to Azure OpenAI resources or to the non-Azure OpenAI inference endpoint, making it a great
+            choice for even non-Azure OpenAI development.</li></ul>
+    </dd>
+</dl>
+<dl>
+    <dt>Setup Development Environment</dt>
+    <dd>
+        <ul>
+            <li>Downloaded .NET SDK <i>(Optional due to Visual Studio)</i></li>
+            <li>Install the client library for .NET with NuGet <i>dotnet add package Azure.AI.OpenAI --prerelease</i>
+
+                Documentation: <a href="https://learn.microsoft.com/en-us/dotnet/api/overview/azure/ai.openai-readme?view=azure-dotnet-preview">https://learn.microsoft.com/en-us/dotnet/api/overview/azure/ai.openai-readme?view=azure-dotnet-preview</a>
+            </li>
+            <li>Download Visual Studio Community (with Blazor plugin)</li>
+            <li>
+                Create a new Blazor Application with the wizard. Blazor is a .NET frontend web framework that supports both
+                server-side rendering and client interactivity in a single programming model: Blazor is a framework
+                for building interactive client-side web UI with .NET: Create rich interactive UIs using C#.
+                Share server-side and client-side app logic written in .NET.
+
+                Documentation: <a hef="https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-8.0">https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-8.0</a>
+
+            </li>
+            <li>
+                Authenticate to the API
+
+                Add OpenAI API Key to app.settings.Development.json file
+                <pre>
+                <code>
+                    "OpenAI": {
+                        "ApiKey": "YOUR_API_KEY_HERE"
+                     }
+                 </code>
+                </pre>
+            </li>
+            <li>
+                Add the Azure OpenAI client library for .NET as a Dependency
+
+                <div>
+                    <img src="images/vs1.png" width="300px" />
+
+                    <img src="images/vs2.png" width="300px" />
+                </div>
+
+            </li>
+        </ul>
+    </dd>
+</dl>

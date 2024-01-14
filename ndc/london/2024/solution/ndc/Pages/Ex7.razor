@@ -1,0 +1,94 @@
+﻿@page "/ex7"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 7: Personal Trainer</h3>
+
+<div>
+    <h4 for="prompt">Enter original prompt:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+    <label for="result">Original Prompt Results:</label>
+    @generatedText
+</div>
+<hr />
+&nbsp;
+<div>
+    <h4 for="prompt">Enter tuned prompt:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="tunedPromptText" />
+</div>
+&nbsp;
+<div>
+    <label for="result">Tuned prompt results:</label>
+    @tunedGeneratedText
+</div>
+&nbsp;
+<div>
+
+    <button class="btn btn-primary" @onclick="GenerateText">Training Recommemdations</button>
+    <hr />
+</div>
+
+
+
+
+
+@*What are the benefits of exercise?*@
+
+@*In a detailed response, provide at least five scientifically-backed
+    benefits of regular exercise, including both physical and
+    mental advantages.*@
+
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string tunedPromptText;
+    private string generatedText;
+    private string tunedGeneratedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private ChatCompletionsOptions generateCChatCompletionsOptions(string prompt)
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+{
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are a helpful assistant."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage(prompt),
+            }
+        };
+
+        return chatCompletionsOptions;
+
+    }
+
+    private async Task GenerateText()
+    {
+        var response = await client.GetChatCompletionsAsync(generateCChatCompletionsOptions(promptText));
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+        response = await client.GetChatCompletionsAsync(generateCChatCompletionsOptions(tunedPromptText));
+
+        responseMessage = response.Value.Choices[0].Message;
+        tunedGeneratedText = responseMessage.Content;
+
+    }
+}
+

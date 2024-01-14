@@ -1,0 +1,129 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ndc
+build_property.RootNamespace = ndc
+build_property.ProjectDir = /Users/keshawilliams/Documents/openai/NDC/ndc/ndc/
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/keshawilliams/Documents/openai/NDC/ndc/ndc
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Chat.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2hhdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex1.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex10.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxMC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex11.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxMS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex12.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxMi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex13.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxMy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex14.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgxNC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex2.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex3.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXgzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex4.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex5.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg1LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex6.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg2LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex7.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg3LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex8.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Ex9.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXg5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRmV0Y2hEYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Overview.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvT3ZlcnZpZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Prereq.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJlcmVxLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Schedule.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2NoZWR1bGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL1N1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-gn4s8te24m
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-248v7bhzwx
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/keshawilliams/Documents/openai/NDC/ndc/ndc/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

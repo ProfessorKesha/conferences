@@ -1,0 +1,112 @@
+﻿@page "/ex11"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 11: Writing Bot</h3>
+
+<div>
+    <h4 for="prompt">Enter text with errors:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+
+@* Proofread and correct the spelling and grammar in the following text.
+    If no errors found, simply state, "No errors".
+
+    The text is: Me and my friend, we goes to the park yesterday. We play
+    ball and have lots of fun. But then, I seen a bird and I tries to catch
+    it. I run and jump, but the bird flies away. My friend laughts and tells
+    me to be careful. After that, we goes home and eats ice cream.*@
+
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Check Spelling and Grammar</button>
+    <hr />
+</div>
+&nbsp;
+
+<div>
+    <label for="result">Corrected Text:</label>
+    @generatedText
+</div>
+
+<hr />
+
+   @*Translate the following text from slang to formal business language for an email to send to co-workers:
+
+    The text is:  Hey, fam! Guess what? I just scored some lit tickets to the
+    sickest concert ever! I'm gonna catch my absolute favorite artist, and
+    they're gonna slay the stage with their fire beats and killer vocals. I'm so
+    hyped! Gonna rock my fresh kicks, drip in the trendiest threads,
+    and bust out my killer dance moves. Can't wait to vibe like it's 2023!
+    It's gonna be absolutely vibes!*@
+
+<div>
+    <h4 for="prompt">Tone Adjustment:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="toneText" />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="FixTone">Fix Tone</button>
+    <hr />
+</div>
+<div>
+    <label for="result">Adjusted Tone:</label>
+    @generatedTone
+</div>
+
+
+
+@code {
+    private OpenAIClient? client;
+    private string? promptText = "Me and my friend, we goes to the park yesterday. We play ball and have lots of fun. But then, I seen a bird and I tries to catch it. I run and jump, but the bird flies away. My friend laughts and tells me to be careful. After that, we goes home and eats ice cream.";
+    private string? generatedText;
+    private string? apiKey;
+    private string? toneText = "Hey, fam! Guess what? I just scored some lit tickets to the sickest concert ever! I'm gonna catch my absolute favorite artist, and they're gonna slay the stage with their fire beats and killer vocals. I'm so hyped! Gonna rock my fresh kicks, drip in the trendiest threads, and bust out my killer dance moves. Can't wait to vibe like it's 2023! It's gonna be absolutely vibes!";
+    private string? generatedTone;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+
+    private ChatCompletionsOptions generateCChatCompletionsOptions(string prompt)
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+            {
+                // The system message represents instructions or other guidance about how the assistant should behave
+                new ChatRequestSystemMessage("You are a helpful assistant that proofreads and corrects text."),
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage(prompt),
+            }
+        };
+
+        return chatCompletionsOptions;
+
+    }
+
+    private async Task FixTone()
+    {
+        var response = await client.GetChatCompletionsAsync(generateCChatCompletionsOptions(toneText));
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedTone = responseMessage.Content;
+    }
+
+    private async Task GenerateText()
+    {
+        var response = await client.GetChatCompletionsAsync(generateCChatCompletionsOptions(promptText));
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+

@@ -1,0 +1,56 @@
+﻿@page "/ex13"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>
+    Exercise 13: Generate images with DALL-E image generation models
+</h3>
+
+<div>
+    <h4 for="prompt">Enter the image generation prompt:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="GenerateImage">Generate Image</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Generated Text:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateImage()
+    {
+        var imageGenerations = await client.GetImageGenerationsAsync(
+            new ImageGenerationOptions()
+
+            {
+                Prompt = promptText,
+                Size = ImageSize.Size256x256,
+            }
+        );
+
+        // Image Generations responses provide URLs you can use to retrieve requested images
+        var imageUri = imageGenerations.Value.Data[0].Url;
+
+        generatedText = imageUri.ToString();
+    }
+}
+

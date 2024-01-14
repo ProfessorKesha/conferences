@@ -1,0 +1,125 @@
+﻿@page "/ex10"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 10: Search Bot</h3>
+
+<div>
+    <h4 for="prompt">Enter single word:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="GenerateEmbeddings">Generate Embeddings</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Embeddings:</label>
+    @generatedText
+</div>
+
+<hr />
+
+<h3>Exercise 10: Calculate Cosine Similarity Between Two Words</h3>
+
+<div>
+    <h4 for="prompt">Enter first word:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="firstWord" />
+</div>
+
+<div>
+    <h4 for="prompt">Enter second word:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="secondWord" />
+</div>
+
+&nbsp;
+<div>
+    <button class="btn btn-primary" @onclick="CalculateCosine">Calculate Similarity</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Cosine Similarity Value:</label>
+    @generatedCosine
+</div>
+
+@code {
+    private OpenAIClient? client;
+    private string? promptText;
+    private string? generatedText;
+    private string? apiKey;
+
+    private string? firstWord;
+    private string? secondWord;
+    private string? generatedCosine;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    float CosineSimilarity(float[] vectorA, float[] vectorB)
+    {
+        float dotProduct = 0.0f;
+        float magnitudeA = 0.0f;
+        float magnitudeB = 0.0f;
+
+        for (int i = 0; i < vectorA.Length; i++)
+        {
+            dotProduct += vectorA[i] * vectorB[i];
+            magnitudeA += vectorA[i] * vectorA[i];
+            magnitudeB += vectorB[i] * vectorB[i];
+        }
+
+        return dotProduct / (float)(Math.Sqrt(magnitudeA) * Math.Sqrt(magnitudeB));
+    }
+
+    private async Task CalculateCosine()
+    {
+        EmbeddingsOptions embeddingsOptions = new()
+        {
+            DeploymentName = "text-embedding-ada-002",
+            Input = { firstWord, secondWord },
+        };
+
+        var response = await client.GetEmbeddingsAsync(embeddingsOptions);
+
+        var firstWordEmbedding = response.Value.Data[0].Embedding.ToArray();
+        var secondWordEmbedding = response.Value.Data[1].Embedding.ToArray();
+
+        generatedCosine = CosineSimilarity(firstWordEmbedding, secondWordEmbedding).ToString();
+
+    }
+
+    private async Task GenerateEmbeddings()
+    {
+        var vectorAsString = "[";
+
+        EmbeddingsOptions embeddingsOptions = new()
+        {
+            DeploymentName = "text-embedding-ada-002",
+            Input = { promptText },
+        };
+
+        var response = await client.GetEmbeddingsAsync(embeddingsOptions);
+        var incomingEmbedding = response.Value.Data[0].Embedding.ToArray();
+
+        for (int i = 0; i < incomingEmbedding.Length; i++)
+        {
+
+            Console.WriteLine(incomingEmbedding[i]);
+            vectorAsString = vectorAsString + incomingEmbedding[i];
+            vectorAsString = vectorAsString + " , ";
+        }
+
+        vectorAsString = vectorAsString + "]";
+        generatedText = vectorAsString;
+    }
+}
+

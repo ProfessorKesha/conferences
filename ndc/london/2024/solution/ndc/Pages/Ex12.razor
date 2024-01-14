@@ -1,0 +1,117 @@
+﻿@page "/ex12"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 12: Write a multi-turn conversation</h3>
+
+<div>
+    <h4 for="prompt">Enter a prompt:</h4>
+    <input type="text" id="prompt" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+<div>
+
+
+    <button class="btn btn-primary" @onclick="GenerateText">Generate Text</button>
+    <hr />
+</div>
+
+<div>
+    <span for="result" class="oi oi-comment-square" aria-hidden="true"></span>
+    @generatedText
+</div>
+
+<hr />
+<h5>Chat History</h5>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Message</th>
+           
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var message in messageLog)
+            {
+            <tr>
+                <td><span class="oi oi-chat" aria-hidden="true"></span> @message</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@code {
+    private OpenAIClient? client;
+    private string? promptText;
+    private string? generatedText;
+    private string? apiKey;
+
+    private List<String> messageLog = new List<String>();
+    private List<ChatRequestMessage> conversationMessages = new List<ChatRequestMessage>()
+    {
+        // The system message represents instructions or other guidance about how the assistant should behave
+        new ChatRequestSystemMessage("You are a helpful assistant.")
+    };
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    //used to keep track of the conversation history with the assistant
+    private void CollectMessages(String role, String message)
+    {
+        messageLog.Add(message);
+
+        if (role.Equals("user"))
+        {
+            // User messages represent current or historical input from the end user
+            conversationMessages.Add(new ChatRequestUserMessage(message));
+        }
+        else if (role.Equals("assistant"))
+        {
+            // Assistant messages represent historical responses from the assistant
+            conversationMessages.Add(new ChatRequestAssistantMessage(message));
+        }
+    }
+
+    //invokes the assistant passing in the prompt
+    private async Task GetCompletion()
+    {
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+        };
+
+        //adds all historical messages to the call
+        foreach (ChatRequestMessage chatMessage in conversationMessages)
+        {
+            chatCompletionsOptions.Messages.Add(chatMessage);
+        }
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+        //Console.Write(generatedText);
+
+        //stores the response from the AI assistant
+        CollectMessages("assistant", generatedText);
+    }
+
+    private async Task GenerateText()
+    {
+        generatedText = ""; //reset the output field
+        CollectMessages("user", promptText);
+        await GetCompletion();
+    }
+}
+

@@ -1,0 +1,132 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ndc</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="schedule" Match="NavLinkMatch.All">
+                <span class="oi oi-calendar" aria-hidden="true"></span> Schedule
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="overview" Match="NavLinkMatch.All">
+                <span class="oi oi-globe" aria-hidden="true"></span> Overview
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="prereq" Match="NavLinkMatch.All">
+                <span class="oi oi-pin" aria-hidden="true"></span> Prerequisites
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="chat" Match="NavLinkMatch.All">
+                <span class="oi oi-excerpt" aria-hidden="true"></span> ChatCompletions
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Challenges
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex1" Match="NavLinkMatch.All">
+                <span class="oi oi-chat" aria-hidden="true"></span> Challenge 1
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex2" Match="NavLinkMatch.All">
+                <span class="oi oi-comment-square" aria-hidden="true"></span> Challenge 2
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex3" Match="NavLinkMatch.All">
+                <span class="oi oi-phone" aria-hidden="true"></span> Challenge 3
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex4" Match="NavLinkMatch.All">
+                <span class="oi oi-circle-x" aria-hidden="true"></span> Challenge 4
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex5" Match="NavLinkMatch.All">
+                <span class="oi oi-copywriting" aria-hidden="true"></span> Challenge 5
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex6" Match="NavLinkMatch.All">
+                <span class="oi oi-document" aria-hidden="true"></span> Challenge 6
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex7" Match="NavLinkMatch.All">
+                <span class="oi oi-dial" aria-hidden="true"></span> Challenge 7
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex8" Match="NavLinkMatch.All">
+                <span class="oi oi-signpost" aria-hidden="true"></span> Challenge 8
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex9" Match="NavLinkMatch.All">
+                <span class="oi oi-file" aria-hidden="true"></span> Challenge 9
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex10" Match="NavLinkMatch.All">
+                <span class="oi oi-image" aria-hidden="true"></span> Challenge 10
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex11" Match="NavLinkMatch.All">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Challenge 11
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex12" Match="NavLinkMatch.All">
+                <span class="oi oi-people" aria-hidden="true"></span> Challenge 12
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex13" Match="NavLinkMatch.All">
+                <span class="oi oi-bullhorn" aria-hidden="true"></span> Challenge 13
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ex14" Match="NavLinkMatch.All">
+                <span class="oi oi-audio" aria-hidden="true"></span> Challenge 14
+            </NavLink>
+        </div>
+
+        @*<div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>*@
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
+

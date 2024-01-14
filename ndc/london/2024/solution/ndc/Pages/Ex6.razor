@@ -1,0 +1,96 @@
+﻿@page "/ex6"
+<PageTitle>OpenAI</PageTitle>
+
+@using Azure.AI.OpenAI
+
+@inject IConfiguration Configuration
+
+<h3>Exercise 6: RAG/Knowledge Augmentation</h3>
+
+<div>
+    <h4 for="prompt">Enter a prompt:</h4>
+    <textarea id="prompt" cols="40" rows="10" style="width: 100%;" @bind="promptText" />
+</div>
+&nbsp;
+
+<div>
+    <button class="btn btn-primary" @onclick="GenerateText">Prompt LLM</button>
+    <hr />
+</div>
+
+<div>
+    <label for="result">Generated Text:</label>
+    @generatedText
+</div>
+
+@code {
+    private OpenAIClient client;
+    private string promptText;
+    private string generatedText;
+    private string apiKey;
+
+    protected override void OnInitialized()
+    {
+        apiKey = Configuration.GetValue<string>("OpenAI:ApiKey");
+        client = new OpenAIClient(apiKey);
+    }
+
+    private async Task GenerateText()
+    {
+
+        generatedText = "";
+
+        var chatCompletionsOptions = new ChatCompletionsOptions()
+        {
+            DeploymentName = "gpt-3.5-turbo", // Use DeploymentName for "model" with non-Azure clients
+            Messages =
+        {
+                // The system message represents instructions or other guidance about how the assistant should behave
+
+                /*
+                    Prompts:
+
+                        Tell me the flight routes on Kesha Air.
+                        Which routes do you have that include ATL?
+                        Why is ATL to MIA cheaper than AUS to ATL?
+                        Which seat options are avialble for MIA to SEA?
+                        Do you recommend Flight Route 1. or Flight Route 4. leaving from ATL
+                        Do you recommend Flight Route 100.
+
+                */
+
+                //Basic system message
+                new ChatRequestSystemMessage("You are travel agent helping book airline flights."),
+
+                //RAG system message
+                //new ChatRequestSystemMessage("You are an AI assistant that helps customers book flights on the Kesha Air airline.   " +
+                //"Follow these steps to answer the customer queries.  " +
+                //"Step 1: First decide whether the user is asking a question about a " +
+                //"specific airline or flight route.    " +
+                //"Step 2: If the user is asking about   specific flight routes, identify whether   " +
+                //"the flight routes are in the following list.  All available Flight Routes:  " +
+                //"1. Airline: Kesha Air    Flight Route: ATL to MIA    Length: 2 hours    Seat Options: First, Business, Economy    Cost: $399.99  " +
+                //"2. Airline: Kesha Air    Flight Route: CHS to LGA    Length: 5 hours    Seat Options: First, Economy, Basic    Cost: $799.99     " +
+                //"3. Airline: Kesha Air    Flight Route: LAX to MSY    Length: 3 hours    Seat Options: First, Business, Economy, Basic    Cost: $599.99    " +
+                //" 4. Airline: Pluralsight Air    Flight Route: MIA to SEA    Length: 4 hours    Seat Options: First, Business, Economy    Cost: $999.99     " +
+                //"5. Airline: Kesha Air    Flight Route: AUS to ATL    Length: 2 hours    Seat Options: First, Business, Economy    Cost: $299.99  " +
+                //"Step 3: If the message contains flight routes   in the list above, list any assumptions that the   user is making in their   message e.g. that Flight Route 5 is cheaper than   Flight Route 1, or that Flight Route 5 only has First class seat options.   " +
+                //"Step 4: If the user made any assumptions,   figure out whether the assumption is true based on your   flight routes information.   Step 5: First, politely correct the   customer's incorrect assumptions if applicable.   " +
+                //"Only mention or reference flight routes in the list of   5 available flight routes, as these are the only 5   flight routes available on Kesha Air.   Answer the customer in a friendly tone.  Use the following format: " +
+                //"Step 1: <step 1 reasoning> Step 2: <step 2 reasoning> Step 3: <step 3 reasoning> Step 4: <step 4 reasoning>  <hr>  Response to user: <response to customer>"),
+
+
+
+                // User messages represent current or historical input from the end user
+                new ChatRequestUserMessage(promptText),
+        }
+        };
+
+        var response = await client.GetChatCompletionsAsync(chatCompletionsOptions);
+
+        ChatResponseMessage responseMessage = response.Value.Choices[0].Message;
+        generatedText = responseMessage.Content;
+
+    }
+}
+
